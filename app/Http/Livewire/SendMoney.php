@@ -107,7 +107,7 @@ class SendMoney extends Component
         }
     }
 
-    public function checkValue(){
+    public function calculateQuoteValue(){
         // check to see if values are in the amout fields
         if (empty($this->base_amount) or empty($this->quote_amount)) {
             $this->exchage_rate = 0;
@@ -127,6 +127,33 @@ class SendMoney extends Component
             }elseif ($this->base_currency == 'NGN' and $this->quote_currency != 'NGN') {
                 $rate = $this->getRate(base:$this->quote_currency, quote:$this->base_currency);
                 $this->quote_amount = $this->base_amount / $rate;
+                $ngnex = 1/$rate;
+                $this->exchage_rate = round($ngnex,6);
+            }
+        }
+    }
+
+
+    public function calculateBaseValue(){
+        // check to see if values are in the amout fields
+        if (empty($this->base_amount) or empty($this->quote_amount)) {
+            $this->exchage_rate = 0;
+            $this->charges = 0;
+            $this->total = 0;
+            $this->disabled = true;
+        }else {
+            $this->disabled = false;
+            // calculate values based on user currency selection 
+            $this->charges = $this->base_amount * 2/100;
+            $this->total = $this->charges + $this->base_amount;
+
+            if (($this->base_currency != 'NGN' and $this->quote_currency != 'NGN') or ($this->base_currency != 'NGN' and $this->quote_currency == 'NGN')) {
+                $rate = $this->getRate(base:$this->base_currency, quote:$this->quote_currency);
+                $this->base_amount = $this->quote_amount / $rate;
+                $this->exchage_rate = round($rate,6);
+            }elseif ($this->base_currency == 'NGN' and $this->quote_currency != 'NGN') {
+                $rate = $this->getRate(base:$this->quote_currency, quote:$this->base_currency);
+                $this->base_amount = $this->quote_amount * $rate;
                 $ngnex = 1/$rate;
                 $this->exchage_rate = round($ngnex,6);
             }

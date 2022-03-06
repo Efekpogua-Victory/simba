@@ -57,7 +57,7 @@
                         <label for="youSend" class="form-label">You Send</label>
                         <div class="input-group">
                             <span class="input-group-text">{{ $base_symbol }}</span>
-                            <input type="number" wire:keyup='checkValue' class="form-control" wire:model='base_amount' required>
+                            <input type="number" wire:keyup='calculateQuoteValue' class="form-control" wire:model='base_amount' required>
                             <span class="input-group-text p-0">
                                 <select wire:model='base_currency' wire:change='changeCurrency'
                                     class="form-control bg-transparent" required>
@@ -73,7 +73,7 @@
                         <label for="recipientGets" class="form-label">Recipient Gets</label>
                         <div class="input-group">
                             <span class="input-group-text">{{ $quote_symbol }}</span>
-                            <input type="number" wire:keyup='checkValue' wire:model="quote_amount" class="form-control" required>
+                            <input type="number" wire:keyup='calculateBaseValue' wire:model="quote_amount" class="form-control" required>
                             <span class="input-group-text p-0">
                                 <select id="recipientCurrency" data-style="form-select bg-transparent border-0"
                                     wire:model='quote_currency' wire:change='changeCurrency' data-container="body" data-live-search="true"
@@ -86,7 +86,15 @@
                         </div>
                         <small class="text-danger">{{$quoteerror}}</small>
                     </div>
-
+                    <div class="spinner-border spinner-border-sm" role="status" wire:loading wire:target="changeCurrency" >
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <div class="spinner-border spinner-border-sm" role="status" wire:loading wire:target="calculateQuoteValue"> 
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <div class="spinner-border spinner-border-sm" role="status" wire:loading wire:target="calculateBaseValue"> 
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
                     <p class="text-muted text-center">The current exchange rate is <span class="fw-500">1
                             {{ $base_currency }} =
                             {{ $exchage_rate }} {{ $quote_currency }}</span>
