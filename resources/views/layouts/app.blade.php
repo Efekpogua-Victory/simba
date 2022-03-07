@@ -44,8 +44,9 @@
                     <div class="header-column justify-content-start">
                         <!-- Logo
           ============================= -->
-                        <div class="logo me-3"> <a class="d-flex" href="/dashboard"><img
-                                    src="{{ asset('images/logo.png') }}" alt="Payyed"></a> </div>
+                        <div class="logo me-3"> <a class="d-flex" href="/dashboard">
+                            <h2 class="text-success">PAYSWAP</h2>
+                        </a> </div>
                         <!-- Logo end -->
                         <!-- Collapse Button
           ============================== -->
