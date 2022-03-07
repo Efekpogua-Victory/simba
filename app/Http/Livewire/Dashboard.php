@@ -16,7 +16,7 @@ class Dashboard extends Component
     public function render()
     {
         return view('livewire.dashboard', [
-            'transactions' =>  Transaction::where('user_id', Auth::user()->id)->with(['sender'])->paginate(10),
+            'transactions' =>  Transaction::where('user_id', Auth::user()->id)->with(['sender'])->orderByDesc('id')->paginate(7),
         ])->extends('layouts.app');
     }
 }

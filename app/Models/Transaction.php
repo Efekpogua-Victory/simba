@@ -18,4 +18,9 @@ class Transaction extends Model
     {
         return $this->hasOne(User::class, 'id', 'sender_id');
     }
+
+    public function user()
+    {
+        return $this->hasOne(User::class);
+    }
 }

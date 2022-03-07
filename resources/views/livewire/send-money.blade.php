@@ -38,15 +38,17 @@
     <div class="row">
         <div class="col-md-9 col-lg-7 col-xl-6 mx-auto">
             <div class="bg-white shadow-sm rounded p-3 pt-sm-4 pb-sm-5 px-sm-5 mb-4">
-                
+                <x-error-alert/>
+                <x-success-alert/>
                 <!-- Send Money Form
             ============================ -->
-                <form id="form-send-money" method="post">
+                <form id="form-send-money" wire:submit.prevent='chargeAccount'>
                     <div class="mb-3">
                         <label for="emailID" class="form-label">Recipient</label>
-                        <select class="form-control bg-transparent" required=""
+                        <select class="form-control bg-transparent"
                             wire:model='receiver' required>
                             <option></option>
+                            <option>Every User</option>
                             @foreach ($users as $user)
                                 <option>{{ $user->email }}</option>
                             @endforeach
@@ -57,7 +59,7 @@
                         <label for="youSend" class="form-label">You Send</label>
                         <div class="input-group">
                             <span class="input-group-text">{{ $base_symbol }}</span>
-                            <input type="number" wire:keyup='calculateQuoteValue' class="form-control" wire:model='base_amount' required>
+                            <input type="number" wire:keyup='calculateQuoteValue' step="any"  class="form-control" step="any" wire:model='base_amount' required>
                             <span class="input-group-text p-0">
                                 <select wire:model='base_currency' wire:change='changeCurrency'
                                     class="form-control bg-transparent" required>
@@ -73,7 +75,7 @@
                         <label for="recipientGets" class="form-label">Recipient Gets</label>
                         <div class="input-group">
                             <span class="input-group-text">{{ $quote_symbol }}</span>
-                            <input type="number" wire:keyup='calculateBaseValue' wire:model="quote_amount" class="form-control" required>
+                            <input type="number" wire:keyup='calculateBaseValue' wire:model="quote_amount" class="form-control" step="any" required>
                             <span class="input-group-text p-0">
                                 <select id="recipientCurrency" data-style="form-select bg-transparent border-0"
                                     wire:model='quote_currency' wire:change='changeCurrency' data-container="body" data-live-search="true"
@@ -105,7 +107,13 @@
                     <p class="text-4 fw-500">Total To Pay<span
                             class="float-end">{{ number_format($total) }}{{ $base_currency }}</span></p>
                     <div class="d-grid">
-                        <button class="btn btn-primary" {{$disabled ? 'disabled' : ''}}>Continue</button></div>
+                        <button class="btn btn-primary" {{$disabled ? 'disabled' : ''}}>
+                            <div class="spinner-border spinner-border-sm" role="status" wire:loading wire:target="chargeAccount"> 
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <span wire:loading.remove wire:target="chargeAccount">Continue</span>
+                        </button>
+                    </div>
                 </form>
                 <!-- Send Money Form end -->
             </div>

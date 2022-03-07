@@ -159,4 +159,33 @@ class SendMoney extends Component
             }
         }
     }
+
+
+    public function chargeAccount(){
+        sleep(2);
+        $user = Auth::user();
+        if ($this->base_currency == 'USD') {
+            $balance= $user->usd_balance;
+        }elseif ($this->base_currency == 'NGN') {
+            $balance= $user->ngn_balance;
+        }elseif ($this->base_currency == 'EUR') {
+            $balance= $user->eur_balance;
+        }elseif ($this->base_currency == 'GBP') {
+            $balance= $user->gbp_balance;
+        }
+
+        if ($balance < $this->base_amount) {
+            session()->flash('message', 'You have insufficient fund in your account.');
+        }else {
+            session([
+                'amount' => $this->base_amount,
+                'fees' => $this->charges,
+                'total' => $this->total,
+                'receiver_email' => $this->receiver,
+                'base_currency' => $this->base_currency,
+                'quote_currency'=> $this->quote_currency,
+            ]);
+            return redirect()->route('confirm-send');
+        }
+    }
 }

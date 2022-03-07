@@ -16,7 +16,7 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('transation_id')->nullable()->unique();
+            $table->string('transation_id')->nullable();
             $table->text('description')->nullable();
             $table->foreignIdFor(User::class)->nullable()->constrained();
             $table->foreignId('sender_id')->nullable();

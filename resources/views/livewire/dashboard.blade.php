@@ -71,11 +71,22 @@
                                 <td>
                                     @if (empty($txn->sender_id))
                                         System default
+                                    @elseif($txn->sender_id == Auth::user()->id)
+                                        Me
                                     @else
                                         {{$txn->sender->name}}
                                     @endif
                                 </td>
-                                <td>{{number_format($txn->value)}} ({{$txn->quote_currency}})</td>
+                                
+                                <td>
+                                    @if (empty($txn->sender_id))
+                                    <span class="text-success">{{number_format($txn->value)}} ({{$txn->quote_currency}})</span>
+                                    @elseif($txn->sender_id == Auth::user()->id)
+                                    <span class="text-danger">-{{number_format($txn->value)}} ({{$txn->quote_currency}})</span>
+                                    @else
+                                    <span class="text-success">{{number_format($txn->value)}} ({{$txn->quote_currency}})</span>
+                                    @endif
+                                </td>
                                 <td>
                                     @if ($txn->status == 'success')
                                     <span class="badge bg-success">Success</span>
