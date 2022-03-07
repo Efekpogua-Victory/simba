@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Transaction;
 use App\Models\User;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
@@ -32,8 +33,10 @@ class SendMoneyConfirm extends Component
         $transation_id = rand(123123,787926);
 
         // Transaction atomicity derivation
-        $number = rand(1,6);
-        $response = $this->check($number);
+        $array = [2, 4, 6, 8, 5, 9];
+        $randomnumber = Arr::random($array);
+
+        $response = $this->check($randomnumber);
         if ($response == 'Even') {
             $status = 'success';
         }else {
