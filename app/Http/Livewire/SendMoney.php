@@ -175,7 +175,7 @@ class SendMoney extends Component
         }
 
         if ($balance < $this->base_amount) {
-            session()->flash('message', 'You have insufficient fund in your account.');
+            session()->flash('message', "You have insufficient fund in your $this->base_currency account.");
         }else {
             session([
                 'amount' => $this->base_amount,
